@@ -1,5 +1,9 @@
 # Redis Cluster in Docker Swarm (mode)
 
+> This repository is inspired by
+  [https://github.com/AliyunContainerService/redis-cluster](another
+  redis-cluster) GitHub repository.
+
 There is a `Dockerfile` under `sentinel\` folder which will let you
 create image with Redis Sentinel as an entry point. Here is how you
 can build it:
