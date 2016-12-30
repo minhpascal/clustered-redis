@@ -25,7 +25,7 @@ high cluster availability).
 
 > Note that Redis will only let you configure the first port whether
 the port for internal cluster communications will be calculated based
-on that first node \lstinline|client_port + 10000|.
+on that first node `client_port + 10000`.
 
 Redis is using sharding model based on hash slots. There are `16384`
 hash slots in total that are getting distributed between different
@@ -107,7 +107,7 @@ single master node:
 ```
   # one single master node (it must not be scaled up and stay 1 at all times)
   docker service create \
-    --name (*@\textcolor{red!80}{redis}@*) \
+    --name redis \
     --network fx \
     --port 6379:6379
     redis:3.2.6-alpine
@@ -119,14 +119,14 @@ single master node:
     --replicas 3
     --port 6379:6379
     redis:3.2.6-alpine \
-    redis-server --slaveof (*@\textcolor{red!80}{redis}@*) 6379
+    redis-server --slaveof redis 6379
 
   # and a few sentinel nodes pointing to our master node
   docker service create \
     --name redis-sentinel \
     --network fx \
     --replicas 3 \
-    -e REDIS_MASTER_HOST=(*@\textcolor{red!80}{redis}@*) \
+    -e REDIS_MASTER_HOST=redis \
     -e REDIS_MASTER_PORT=6379 \
     -e SENTINEL_DOWN_AFTER=5000 \
     -e SENTINEL_FAILOVER_TIMEOUT=15000 \
