@@ -105,30 +105,30 @@ Here is our first attempt into building our first Redis cluster with a
 single master node:
 
 ```
-  # one single master node (it must not be scaled up and stay 1 at all times)
-  docker service create \
-    --name redis \
-    --network fx \
-    --port 6379:6379 \
-    redis:3.2.6-alpine
+# one single master node (it must not be scaled up and stay 1 at all times)
+docker service create \
+  --name redis \
+  --network fx \
+  --port 6379:6379 \
+  redis:3.2.6-alpine
 
-  # a few slave nodes pointing to our master node
-  docker service create \
-    --name redis-slave \
-    --network fx \
-    --replicas 3 \
-    --port 6379:6379 \
-    redis:3.2.6-alpine \
-    redis-server --slaveof redis 6379
+# a few slave nodes pointing to our master node
+docker service create \
+  --name redis-slave \
+  --network fx \
+  --replicas 3 \
+  --port 6379:6379 \
+  redis:3.2.6-alpine \
+  redis-server --slaveof redis 6379
 
-  # and a few sentinel nodes pointing to our master node
-  docker service create \
-    --name redis-sentinel \
-    --network fx \
-    --replicas 3 \
-    -e REDIS_MASTER_HOST=redis \
-    -e REDIS_MASTER_PORT=6379 \
-    -e SENTINEL_DOWN_AFTER=5000 \
-    -e SENTINEL_FAILOVER_TIMEOUT=15000 \
-    redis-sentinel:3.2.6-alpine
+# and a few sentinel nodes pointing to our master node
+docker service create \
+  --name redis-sentinel \
+  --network fx \
+  --replicas 3 \
+  -e REDIS_MASTER_HOST=redis \
+  -e REDIS_MASTER_PORT=6379 \
+  -e SENTINEL_DOWN_AFTER=5000 \
+  -e SENTINEL_FAILOVER_TIMEOUT=15000 \
+  redis-sentinel:3.2.6-alpine
 ```
